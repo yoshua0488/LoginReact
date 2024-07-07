@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -20,18 +20,46 @@ function App()
     setClave (evento.target.value)
   }
 
-  function Ingresar () 
+  async function Ingresar () 
   { 
-    if (Usuario == "Admin" && Clave == "Admin")
+    const Peticion = await fetch ("http://localhost:3000/Login?Usuario="+Usuario+"&Clave"+Clave, {credentials: "include"})
+    if 
+    (
+        Peticion.ok
+    )
     {
-      alert ("Bienvenido")
-      setLogueado (true)
+      setLogueado(true)
     }
     else
     {
-      alert ("Usuario o Clave incorrecto")
+      alert ("Usuario o clave incorrectos")
+    }
+    //if (Usuario == "Admin" && Clave == "Admin")
+  //  {
+  //    alert ("Bienvenido")
+  //    setLogueado (true)
+  //  }
+  //  else
+  //  {
+  //    alert ("Usuario o Clave incorrecto")
+  //  }
+  }
+
+  async function Validar () 
+  {
+    const Peticion = await fetch ("http://localhost:3000/Validar", {credentials: "include"})
+    if 
+    (
+        Peticion.ok
+    )
+    {
+      setLogueado(true)
     }
   }
+
+  useEffect(() => {
+    Validar()
+  }, [])
 
   if (Logueado) 
   {
